@@ -107,28 +107,45 @@ bash
 
 
 1
-terraform apply
+```bash terraform apply -var-file=terraform.tfvars --auto-approve```
 Access the Web Server :
 After deployment, you can access the web page hosted on the VM via the public IP that is output by Terraform.
 
 ## Best Practices Implemented 🛡️
 Infrastructure as Code (IaC) : All resources are defined using Terraform, ensuring a reproducible and versioned deployment.
+
 RBAC for Security : Roles are assigned using Azure's RBAC system, ensuring the principle of least privilege for accessing resources.
+
 Secure Access : SSH access to the VM is restricted to specific IPs, ensuring only authorized users can connect.
+
 Key Vault for Secrets Management : Admin passwords and other sensitive data are stored securely in Azure Key Vault, preventing hardcoding in the Terraform configuration.
+
 Monitoring and Alerts : Azure Monitor and Logic Apps are configured to send alerts for high-severity security incidents.
+
 Network Security : NSG (Network Security Groups) are applied to control inbound traffic to the VM.
 
 ## Design Choices & Assumptions 🧩
+
 VNet with DDoS Protection : The VNet includes DDoS protection, as it is critical for securing public-facing applications.
+
 Ubuntu VM : An Ubuntu Linux VM was chosen to minimize costs and ensure compatibility with common open-source software (Nginx in this case).
+
 Nginx Web Server : A simple Hello World HTML page is served by Nginx to demonstrate the VM’s functionality.
+
 Key Vault SKU : The default Key Vault SKU is set to "Standard", which is appropriate for most use cases but can be changed to "Premium" if advanced features are needed.
+
 Role Assignments : The "Virtual Machine Administrator Login" role is assigned to the VM, and the "Key Vault Reader" role is assigned to the admin for accessing Key Vault secrets.
+
 Troubleshooting 🔧
+
 Access Denied Errors : Ensure the Azure Active Directory Object ID provided in terraform.tfvars has the necessary permissions to assign roles.
+
 VM Not Accessible : Verify that your IP is included in the allowed_ssh_ips list in the terraform.tfvars file.
+
 Future Improvements ✨
+
 Automate Key Vault Secret Insertion : Consider automating the insertion of secrets into Key Vault from external sources or securely managed pipelines.
+
 Advanced Monitoring : Add more detailed monitoring such as Azure Security Center integration or custom metrics for the web server.
+
 Scaling VM : Depending on the use case, the VM size and configuration can be scaled up to meet performance demands.
